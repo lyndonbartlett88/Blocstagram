@@ -42,11 +42,15 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (NSArray *) items {
+    return [DataSource sharedInstance].mediaItems;
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 //#warning Incomplete implementation, return the number of rows
-    return [DataSource sharedInstance].mediaItems.count;
+    return [self items].count;
 }
 
 
@@ -68,41 +72,41 @@
         [cell.contentView addSubview:imageView];
     }
     
-    Media *item = [DataSource sharedInstance].mediaItems[indexPath.row];
+    Media *item = [self items][indexPath.row];
     imageView.image = item.image;
     
     return cell;
 }
 -(CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    Media *item = [DataSource sharedInstance].mediaItems[indexPath.row];
+    Media *item = [self items][indexPath.row];
     UIImage *image = item.image;
     
     return (CGRectGetWidth(self.view.frame) / image.size.width) * image.size.height;
 }
 
-
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
- 
-    return YES;
-}
-
-
-
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        [self.images removeObjectAtIndex:indexPath.row];
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-        
-        [tableView reloadData];
-        
-//    } else {
-//        NSLog(@"Not implementated yet! %ld", editingStyle);
-    }
+//
+//- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+// 
+//    return YES;
+//}
 
 
-    }
 
+////// Override to support editing the table view.
+//- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+//    if (editingStyle == UITableViewCellEditingStyleDelete) {
+//        [self.images removeObjectAtIndex:indexPath.row];
+//        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+//        
+//        [tableView reloadData];
+//        
+////    } else {
+////        NSLog(@"Not implementated yet! %ld", editingStyle);
+//    }
+//
+//
+//    }
+//Not sure what happened here.
 
 
 /*
