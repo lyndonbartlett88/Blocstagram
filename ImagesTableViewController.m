@@ -72,21 +72,24 @@
     return [MediaTableViewCell heightForMediaItem:item width:CGRectGetWidth(self.view.frame)];
 }
 
-//
-//- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-// 
-//    return YES;
-//}
+
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+ 
+    return YES;
+}
 
 
 
 ////// Override to support editing the table view.
 //- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
 //    if (editingStyle == UITableViewCellEditingStyleDelete) {
-//        [self.images removeObjectAtIndex:indexPath.row];
+//        Media *item = [self items][indexPath.row];
+//        
+//        [[self items] removeObject:item];
+//        
 //        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
 //        
-//        [tableView reloadData];
+//        
 //        
 ////    } else {
 ////        NSLog(@"Not implementated yet! %ld", editingStyle);
@@ -94,7 +97,7 @@
 //
 //
 //    }
-//Not sure what happened here.
+////Not sure what happened here.
 
 
 /*

@@ -25,6 +25,8 @@ static UIColor *usernameLabelGray;
 static UIColor *commentLabelGray;
 static UIColor *linkColor;
 static NSParagraphStyle *paragraphStyle;
+static UIColor *firstCommentColor;
+static NSParagraphStyle *alignParagraphRight;
 
 @implementation MediaTableViewCell
 
@@ -58,6 +60,7 @@ static NSParagraphStyle *paragraphStyle;
     usernameLabelGray = [UIColor colorWithRed:0.933 green:0.933 blue:0.933 alpha:1];
     commentLabelGray = [UIColor colorWithRed:0.898 green:0.898 blue:0.898 alpha:1];
     linkColor = [UIColor colorWithRed:0.345 green:0.345 blue:0.345 alpha:1];
+    firstCommentColor = [UIColor colorWithRed:0.834 green:0.451 blue:0.123 alpha:1];
     
     NSMutableParagraphStyle *mutableParagraphStyle = [[NSMutableParagraphStyle alloc] init];
     mutableParagraphStyle.headIndent = 20.0;
@@ -65,7 +68,17 @@ static NSParagraphStyle *paragraphStyle;
     mutableParagraphStyle.tailIndent = -20.0;
     mutableParagraphStyle.paragraphSpacingBefore = 5;
     
+    NSMutableParagraphStyle *mutableAlignParagraphRight = [[NSMutableParagraphStyle alloc] init];
+    mutableAlignParagraphRight.headIndent = 20.0;
+    mutableAlignParagraphRight.firstLineHeadIndent = 20.0;
+    mutableAlignParagraphRight.tailIndent = -20.0;
+    mutableAlignParagraphRight.alignment = NSTextAlignmentRight;
+    
+    
     paragraphStyle = mutableParagraphStyle;
+    
+    alignParagraphRight = mutableAlignParagraphRight;
+    
 }
 
 - (NSAttributedString *) usernameAndCaptionString {
@@ -77,8 +90,12 @@ static NSParagraphStyle *paragraphStyle;
     NSMutableAttributedString *mutableUsernameAndCaptionString = [[NSMutableAttributedString alloc] initWithString:baseString attributes:@{NSFontAttributeName : [lightFont fontWithSize:usernameFontSize], NSParagraphStyleAttributeName : paragraphStyle}];
     
     NSRange usernameRange = [baseString rangeOfString:self.mediaItem.user.userName];
+    NSRange textRange = [baseString rangeOfString:self.mediaItem.caption];
+    
     [mutableUsernameAndCaptionString addAttribute:NSFontAttributeName value:[boldFont fontWithSize:usernameFontSize] range:usernameRange];
     [mutableUsernameAndCaptionString addAttribute:NSForegroundColorAttributeName value:linkColor range:usernameRange];
+    
+    [mutableUsernameAndCaptionString addAttribute:NSKernAttributeName value:[NSNumber numberWithFloat:2.0] range:textRange];
     
     return mutableUsernameAndCaptionString;
 }
@@ -86,7 +103,10 @@ static NSParagraphStyle *paragraphStyle;
 - (NSAttributedString *) commentString {
     NSMutableAttributedString *commentString = [[NSMutableAttributedString alloc] init];
     
-    for (Comment *comment in self.mediaItem.comments) {
+    for (int i = 0; i < [self.mediaItem.comments count]; i++) {
+        
+        Comment *comment = self.mediaItem.comments[i];
+    
         // Make a string that says "username comment" followed by a line break
         NSString *baseString = [NSString stringWithFormat:@"%@ %@\n", comment.from.userName, comment.text];
         
@@ -95,8 +115,19 @@ static NSParagraphStyle *paragraphStyle;
         NSMutableAttributedString *oneCommentString = [[NSMutableAttributedString alloc] initWithString:baseString attributes:@{NSFontAttributeName : lightFont, NSParagraphStyleAttributeName : paragraphStyle}];
         
         NSRange usernameRange = [baseString rangeOfString:comment.from.userName];
+        NSRange textRange = [baseString rangeOfString:comment.text];
+        NSRange allRange = [baseString rangeOfString:baseString];
+    
         [oneCommentString addAttribute:NSFontAttributeName value:boldFont range:usernameRange];
         [oneCommentString addAttribute:NSForegroundColorAttributeName value:linkColor range:usernameRange];
+        
+        if (i == 0) {
+            [oneCommentString addAttribute:NSForegroundColorAttributeName value:firstCommentColor range:textRange];
+        }
+        if (i % 2 == 0) {
+            [oneCommentString addAttribute:NSParagraphStyleAttributeName value:alignParagraphRight range:allRange];
+        }
+        
         
         [commentString appendAttributedString:oneCommentString];
     }
@@ -115,10 +146,12 @@ static NSParagraphStyle *paragraphStyle;
 
 - (void) layoutSubviews {
     [super layoutSubviews];
+    if (self.mediaItem.image) {
+        
     
     CGFloat imageHeight = self.mediaItem.image.size.height / self.mediaItem.image.size.width * CGRectGetWidth(self.contentView.bounds);
     self.mediaImageView.frame = CGRectMake(0, 0, CGRectGetWidth(self.contentView.bounds), imageHeight);
-    
+    }
     CGSize sizeOfUsernameAndCaptionLabel = [self sizeOfString:self.usernameAndCaptionLabel.attributedText];
     self.usernameAndCaptionLabel.frame = CGRectMake(0, CGRectGetMaxY(self.mediaImageView.frame), CGRectGetWidth(self.contentView.bounds), sizeOfUsernameAndCaptionLabel.height);
     
