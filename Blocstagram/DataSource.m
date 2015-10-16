@@ -147,8 +147,13 @@
     [_mediaItems replaceObjectAtIndex:index withObject:object];
 }
 
-- (void) deleteMediaItem:(Media *)item {
+//- (void) deleteMediaItem:(Media *)item {
+//    NSMutableArray *mutableArrayWithKVO = [self mutableArrayValueForKey:@"mediaItems"];
+//    [mutableArrayWithKVO removeObject:item];
+//}
+
+- (void) moveMediaItem:(Media *)item {
     NSMutableArray *mutableArrayWithKVO = [self mutableArrayValueForKey:@"mediaItems"];
-    [mutableArrayWithKVO removeObject:item];
+    [mutableArrayWithKVO insertObject:item atIndex:0];
 }
 @end
