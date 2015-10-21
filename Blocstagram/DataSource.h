@@ -7,7 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-
 @class Media;
 
 typedef void (^NewItemCompletionBlock)(NSError *error);
@@ -15,13 +14,17 @@ typedef void (^NewItemCompletionBlock)(NSError *error);
 @interface DataSource : NSObject
 
 +(instancetype) sharedInstance;
-@property (nonatomic, strong, readonly) NSArray *mediaItems;
-
-
++ (NSString *) instagramClientID;
 
 - (void) deleteMediaItem:(Media *)item;
-
+- (void) replaceObjectInMediaItemsAtIndex:(NSUInteger)index withObject:(id)object;
+- (void) removeObjectFromMediaItemsAtIndex:(NSUInteger)index;
+- (void) insertObject:(Media *)object inMediaItemsAtIndex:(NSUInteger)index;
 - (void) requestNewItemsWithCompletionHandler:(NewItemCompletionBlock)completionHandler;
 - (void) requestOldItemsWithCompletionHandler:(NewItemCompletionBlock)completionHandler;
+
+@property (nonatomic, strong, readonly) NSString *accessToken;
+
+@property (nonatomic, strong, readonly) NSArray *mediaItems;
 
 @end

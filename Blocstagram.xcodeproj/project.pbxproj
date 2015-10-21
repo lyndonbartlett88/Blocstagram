@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4D0B76301BD8313E00764934 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4D0B762F1BD8313E00764934 /* LoginViewController.m */; settings = {ASSET_TAGS = (); }; };
 		4D32280F1BCC85F4001D3471 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 4D32280E1BCC85F4001D3471 /* User.m */; settings = {ASSET_TAGS = (); }; };
 		4D3228121BCC86CB001D3471 /* Media.m in Sources */ = {isa = PBXBuildFile; fileRef = 4D3228111BCC86CB001D3471 /* Media.m */; settings = {ASSET_TAGS = (); }; };
 		4D3228151BCC878A001D3471 /* Comment.m in Sources */ = {isa = PBXBuildFile; fileRef = 4D3228141BCC878A001D3471 /* Comment.m */; settings = {ASSET_TAGS = (); }; };
@@ -49,6 +50,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4D0B762E1BD8313E00764934 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
+		4D0B762F1BD8313E00764934 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		4D32280D1BCC85F4001D3471 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
 		4D32280E1BCC85F4001D3471 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
 		4D3228101BCC86CB001D3471 /* Media.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Media.h; sourceTree = "<group>"; };
@@ -148,6 +151,8 @@
 				4D3228141BCC878A001D3471 /* Comment.m */,
 				4D3228161BCC880D001D3471 /* DataSource.h */,
 				4D3228171BCC880D001D3471 /* DataSource.m */,
+				4D0B762E1BD8313E00764934 /* LoginViewController.h */,
+				4D0B762F1BD8313E00764934 /* LoginViewController.m */,
 				4D32280E1BCC85F4001D3471 /* User.m */,
 				4D87C3981BC856C900A2F1BD /* Assets.xcassets */,
 				4D87C39A1BC856C900A2F1BD /* LaunchScreen.storyboard */,
@@ -344,6 +349,7 @@
 				4D357CE21BCDDC1700C58DD0 /* MediaTableViewCell.m in Sources */,
 				4D3228121BCC86CB001D3471 /* Media.m in Sources */,
 				4D87C3911BC856C900A2F1BD /* AppDelegate.m in Sources */,
+				4D0B76301BD8313E00764934 /* LoginViewController.m in Sources */,
 				4D3228181BCC880D001D3471 /* DataSource.m in Sources */,
 				4D87C38E1BC856C900A2F1BD /* main.m in Sources */,
 				4DEDACB81BC8644E007EEF0B /* ImagesTableViewController.m in Sources */,
