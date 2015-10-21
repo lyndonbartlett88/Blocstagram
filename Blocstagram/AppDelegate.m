@@ -25,7 +25,9 @@
     
     [DataSource sharedInstance]; // create the data source (so it can receive the access token notification)
     
-    UINavigationController *navVC = [[UINavigationController alloc] init];    
+    UINavigationController *navVC = [[UINavigationController alloc] init];
+    navVC.toolbarHidden = NO;
+    
     LoginViewController *loginVC = [[LoginViewController alloc] init];
     [navVC setViewControllers:@[loginVC] animated:YES];
     

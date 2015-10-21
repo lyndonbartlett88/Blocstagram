@@ -12,6 +12,7 @@
 @interface LoginViewController () <UIWebViewDelegate>
 
 @property (nonatomic, weak) UIWebView *webView;
+@property (nonatomic, weak) NSArray *setToolbarItems;
 
 @end
 
@@ -25,9 +26,13 @@ NSString *const LoginViewControllerDidGetAccessTokenNotification = @"LoginViewCo
     
     UIWebView *webView = [[UIWebView alloc] init];
     webView.delegate = self;
-    
     [self.view addSubview:webView];
     self.webView = webView;
+    
+    UIBarButtonItem *homeButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemReply target:self action:@selector(LoadLoginPage:)];
+    NSArray *items = [NSArray arrayWithObjects:homeButton, nil];
+    self.setToolbarItems = items;
+    [self setToolbarItems:items];
     
     self.title = NSLocalizedString(@"Login", @"Login");
     
@@ -36,6 +41,17 @@ NSString *const LoginViewControllerDidGetAccessTokenNotification = @"LoginViewCo
     
     if (url) {
         NSURLRequest *request = [NSURLRequest requestWithURL:url];
+        [self.webView loadRequest:request];
+    }
+}
+
+-(IBAction)LoadLoginPage:(id)sender
+{
+    NSString *homeString = [NSString stringWithFormat:@"https://instagram.com/oauth/authorize/?client_id=%@&redirect_uri=%@&response_type=token", [DataSource instagramClientID], [self redirectURI]];
+    NSURL *home = [NSURL URLWithString:homeString];
+    
+    if (home) {
+        NSURLRequest *request = [NSURLRequest requestWithURL:home];
         [self.webView loadRequest:request];
     }
 }
@@ -51,6 +67,7 @@ NSString *const LoginViewControllerDidGetAccessTokenNotification = @"LoginViewCo
 
 - (void) viewWillLayoutSubviews {
     self.webView.frame = self.view.bounds;
+    //    self.toolBar.frame = CGRectMake(0, 0, self.view.frame.size.width, 44);
 }
 
 - (void) dealloc {
@@ -87,7 +104,5 @@ NSString *const LoginViewControllerDidGetAccessTokenNotification = @"LoginViewCo
     
     return YES;
 }
-
-
 
 @end
