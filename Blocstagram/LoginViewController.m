@@ -29,7 +29,7 @@ NSString *const LoginViewControllerDidGetAccessTokenNotification = @"LoginViewCo
     [self.view addSubview:webView];
     self.webView = webView;
     
-    UIBarButtonItem *homeButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemReply target:self action:@selector(LoadLoginPage:)];
+    UIBarButtonItem *homeButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRewind target:self action:@selector(LoadLoginPage:)];
     NSArray *items = [NSArray arrayWithObjects:homeButton, nil];
     self.setToolbarItems = items;
     [self setToolbarItems:items];
