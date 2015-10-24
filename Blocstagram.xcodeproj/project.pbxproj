@@ -19,6 +19,7 @@
 		4D87C39C1BC856C900A2F1BD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4D87C39A1BC856C900A2F1BD /* LaunchScreen.storyboard */; };
 		4D87C3A71BC856C900A2F1BD /* BlocstagramTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4D87C3A61BC856C900A2F1BD /* BlocstagramTests.m */; };
 		4D87C3B21BC856C900A2F1BD /* BlocstagramUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4D87C3B11BC856C900A2F1BD /* BlocstagramUITests.m */; };
+		4DD693D21BDC0B8F0051D14E /* MediaFullScreenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4DD693D11BDC0B8F0051D14E /* MediaFullScreenViewController.m */; };
 		4DEDACAC1BC863F7007EEF0B /* 1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 4DEDACA21BC863F7007EEF0B /* 1.jpg */; };
 		4DEDACAD1BC863F7007EEF0B /* 2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 4DEDACA31BC863F7007EEF0B /* 2.jpg */; };
 		4DEDACAE1BC863F7007EEF0B /* 3.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 4DEDACA41BC863F7007EEF0B /* 3.jpg */; };
@@ -77,6 +78,8 @@
 		4D87C3AD1BC856C900A2F1BD /* BlocstagramUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BlocstagramUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4D87C3B11BC856C900A2F1BD /* BlocstagramUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BlocstagramUITests.m; sourceTree = "<group>"; };
 		4D87C3B31BC856C900A2F1BD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4DD693D01BDC0B8F0051D14E /* MediaFullScreenViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaFullScreenViewController.h; sourceTree = "<group>"; };
+		4DD693D11BDC0B8F0051D14E /* MediaFullScreenViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaFullScreenViewController.m; sourceTree = "<group>"; };
 		4DEDACA21BC863F7007EEF0B /* 1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 1.jpg; sourceTree = "<group>"; };
 		4DEDACA31BC863F7007EEF0B /* 2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 2.jpg; sourceTree = "<group>"; };
 		4DEDACA41BC863F7007EEF0B /* 3.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 3.jpg; sourceTree = "<group>"; };
@@ -151,6 +154,8 @@
 				4DEDACB71BC8644E007EEF0B /* ImagesTableViewController.m */,
 				4D357CE01BCDDC1700C58DD0 /* MediaTableViewCell.h */,
 				4D357CE11BCDDC1700C58DD0 /* MediaTableViewCell.m */,
+				4DD693D01BDC0B8F0051D14E /* MediaFullScreenViewController.h */,
+				4DD693D11BDC0B8F0051D14E /* MediaFullScreenViewController.m */,
 				4D32280D1BCC85F4001D3471 /* User.h */,
 				4D32280E1BCC85F4001D3471 /* User.m */,
 				4D3228101BCC86CB001D3471 /* Media.h */,
@@ -419,6 +424,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4DD693D21BDC0B8F0051D14E /* MediaFullScreenViewController.m in Sources */,
 				4D32280F1BCC85F4001D3471 /* User.m in Sources */,
 				4D3228151BCC878A001D3471 /* Comment.m in Sources */,
 				4D357CE21BCDDC1700C58DD0 /* MediaTableViewCell.m in Sources */,
