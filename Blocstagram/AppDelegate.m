@@ -26,6 +26,8 @@
     [DataSource sharedInstance]; // create the data source (so it can receive the access token notification)
     
     UINavigationController *navVC = [[UINavigationController alloc] init];
+    if (![DataSource sharedInstance].accessToken) {
+    
     navVC.toolbarHidden = NO;
     
     LoginViewController *loginVC = [[LoginViewController alloc] init];
@@ -34,7 +36,12 @@
     [[NSNotificationCenter defaultCenter] addObserverForName:LoginViewControllerDidGetAccessTokenNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
         ImagesTableViewController *imagesVC = [[ImagesTableViewController alloc] init];
         [navVC setViewControllers:@[imagesVC] animated:YES];
+        
     }];
+    } else {
+        ImagesTableViewController *imagesVC = [[ImagesTableViewController alloc] init];
+        [navVC setViewControllers:@[imagesVC] animated:YES];
+    }
     
     self.window.rootViewController = navVC;
     
@@ -60,6 +67,7 @@
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
+    [[DataSource sharedInstance] requestNewItemsWithCompletionHandler:nil];
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
 }
 
