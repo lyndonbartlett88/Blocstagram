@@ -44,6 +44,14 @@
     
     [self.scrollView addSubview:self.imageView];
     
+    UIButton *shareButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [shareButton setTitle:@"Share" forState:UIControlStateNormal];
+    [shareButton sizeToFit];
+    shareButton.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    [shareButton addTarget:self action:@selector(sharePressed:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:shareButton];
+    
     // #3
     self.scrollView.contentSize = self.media.image.size;
     
@@ -57,6 +65,19 @@
     
     [self.scrollView addGestureRecognizer:self.tap];
     [self.scrollView addGestureRecognizer:self.doubleTap];
+    
+    
+    NSLayoutConstraint *buttonConstraintx = [NSLayoutConstraint constraintWithItem:shareButton attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTrailing multiplier:1.0f constant:-15.f];
+    
+    [self.view addConstraint:buttonConstraintx];
+    
+    
+    NSLayoutConstraint *buttonConstrainty = [NSLayoutConstraint constraintWithItem:shareButton attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTop multiplier:1.0f constant:30.f];
+    
+    [self.view addConstraint:buttonConstrainty];
+    
+    
+    
     // Do any additional setup after loading the view.
 }
 
@@ -82,6 +103,24 @@
     self.scrollView.maximumZoomScale = 1;
 }
 
+- (IBAction) shareButton: (id)sender
+{
+    NSMutableArray *itemsToShare = [NSMutableArray array];
+    
+    if (self.media.caption.length > 0) {
+        [itemsToShare addObject:self.media.caption];
+    }
+    
+    if (self.imageView.image) {
+        [itemsToShare addObject:self.imageView.image];
+    }
+    
+    if (itemsToShare.count > 0) {
+        UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:itemsToShare applicationActivities:nil];
+        [self presentViewController:activityVC animated:YES completion:nil];
+    }
+}
+
 - (void)centerScrollView {
     [self.imageView sizeToFit];
     
@@ -102,6 +141,19 @@
     
     self.imageView.frame = contentsFrame;
 }
+
+- (void)sharePressed:(UIButton *)sender {
+    
+    NSMutableArray *itemsToShare = [NSMutableArray array];
+    
+    [itemsToShare addObject:self.media.image];
+    
+    UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:itemsToShare applicationActivities:nil];
+    [self presentViewController:activityVC animated:YES completion:nil];
+    
+    
+}
+
 
 #pragma mark - UIScrollViewDelegate
 // #6
