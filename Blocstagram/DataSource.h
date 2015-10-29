@@ -22,6 +22,7 @@ typedef void (^NewItemCompletionBlock)(NSError *error);
 - (void) insertObject:(Media *)object inMediaItemsAtIndex:(NSUInteger)index;
 - (void) requestNewItemsWithCompletionHandler:(NewItemCompletionBlock)completionHandler;
 - (void) requestOldItemsWithCompletionHandler:(NewItemCompletionBlock)completionHandler;
+- (void) downloadImageForMediaItem:(Media *)mediaItem;
 
 @property (nonatomic, strong, readonly) NSString *accessToken;
 

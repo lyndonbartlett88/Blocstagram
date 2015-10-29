@@ -239,7 +239,7 @@
                                         
                                     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                                         NSLog(@"Error downloading image: %@", error);
-                            }];
+                                    }];
     }
 }
 
