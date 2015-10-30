@@ -43,7 +43,7 @@ static NSParagraphStyle *alignParagraphRight;
         // Initialization code
         self.mediaImageView = [[UIImageView alloc] init];
         self.mediaImageView.userInteractionEnabled = YES;
-        
+        self.mediaImageView.multipleTouchEnabled = YES;
         self.tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapFired:)];
         self.tapGestureRecognizer.delegate = self;
         self.tapGestureRecognizer.numberOfTouchesRequired = 1;

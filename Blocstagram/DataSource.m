@@ -232,7 +232,15 @@
                                             mediaItem.image = responseObject;
                                             NSMutableArray *mutableArrayWithKVO = [self mutableArrayValueForKey:@"mediaItems"];
                                             NSUInteger index = [mutableArrayWithKVO indexOfObject:mediaItem];
-                                            [mutableArrayWithKVO replaceObjectAtIndex:index withObject:mediaItem];
+                                            //verify range of index is valid
+                                            //if range is valid then
+                                            //replace object
+                                            NSLog(@"%lu",(unsigned long)index);
+                                            if ((mutableArrayWithKVO.count-1) > index) {
+                                                [mutableArrayWithKVO replaceObjectAtIndex:index withObject:mediaItem];
+                                            }
+                                                
+                                            
                                         }
                                         
                                         [self saveImages];
