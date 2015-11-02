@@ -141,6 +141,10 @@
     [self infiniteScrollIfNecessary];
 }
 
+- (void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView{
+    scrollView.decelerationRate = 180.0;
+}
+
 
 #pragma mark - Table view data source
 
