@@ -199,7 +199,7 @@
     [self saveImages];
 }
 
-- (void) saveImages {
+- (void)saveImages {
     
     if (self.mediaItems.count > 0) {
         // Write the changes to disk
@@ -297,6 +297,8 @@
     NSString *urlString = [NSString stringWithFormat:@"media/%@/likes", mediaItem.idNumber];
     NSDictionary *parameters = @{@"access_token": self.accessToken};
     
+    BOOL simulateSuccessfulLiking = YES;
+    
     if (mediaItem.likeState == LikeStateNotLiked) {
         
         mediaItem.likeState = LikeStateLiking;
@@ -304,11 +306,25 @@
         [self.instagramOperationManager POST:urlString parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
             mediaItem.likeState = LikeStateLiked;
             
+            mediaItem.likeCount++;
+            
+            [self saveImages];
+            
+            
             if (completionHandler) {
                 completionHandler();
             }
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             mediaItem.likeState = LikeStateNotLiked;
+            
+            if (simulateSuccessfulLiking) {
+                
+                mediaItem.likeState = LikeStateLiked;
+                
+                mediaItem.likeCount++;
+                
+                [self saveImages];
+            }
             
             if (completionHandler) {
                 completionHandler();
@@ -322,11 +338,24 @@
         [self.instagramOperationManager DELETE:urlString parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
             mediaItem.likeState = LikeStateNotLiked;
             
+            mediaItem.likeCount++;
+            
+            [self saveImages];
+            
             if (completionHandler) {
                 completionHandler();
             }
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             mediaItem.likeState = LikeStateLiked;
+            
+            if (simulateSuccessfulLiking) {
+                
+                mediaItem.likeState = LikeStateNotLiked;
+                
+                mediaItem.likeCount++;
+                
+                [self saveImages];
+            }
             
             if (completionHandler) {
                 completionHandler();
