@@ -22,6 +22,7 @@
 		4D87C39C1BC856C900A2F1BD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4D87C39A1BC856C900A2F1BD /* LaunchScreen.storyboard */; };
 		4D87C3A71BC856C900A2F1BD /* BlocstagramTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4D87C3A61BC856C900A2F1BD /* BlocstagramTests.m */; };
 		4D87C3B21BC856C900A2F1BD /* BlocstagramUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4D87C3B11BC856C900A2F1BD /* BlocstagramUITests.m */; };
+		4DDE3D451BEBEF8C0017E67B /* ComposeCommentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4DDE3D441BEBEF8C0017E67B /* ComposeCommentView.m */; };
 		4DEDACAC1BC863F7007EEF0B /* 1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 4DEDACA21BC863F7007EEF0B /* 1.jpg */; };
 		4DEDACAD1BC863F7007EEF0B /* 2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 4DEDACA31BC863F7007EEF0B /* 2.jpg */; };
 		4DEDACAE1BC863F7007EEF0B /* 3.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 4DEDACA41BC863F7007EEF0B /* 3.jpg */; };
@@ -85,6 +86,8 @@
 		4D87C3AD1BC856C900A2F1BD /* BlocstagramUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BlocstagramUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4D87C3B11BC856C900A2F1BD /* BlocstagramUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BlocstagramUITests.m; sourceTree = "<group>"; };
 		4D87C3B31BC856C900A2F1BD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4DDE3D431BEBEF8C0017E67B /* ComposeCommentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ComposeCommentView.h; sourceTree = "<group>"; };
+		4DDE3D441BEBEF8C0017E67B /* ComposeCommentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ComposeCommentView.m; sourceTree = "<group>"; };
 		4DEDACA21BC863F7007EEF0B /* 1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 1.jpg; sourceTree = "<group>"; };
 		4DEDACA31BC863F7007EEF0B /* 2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 2.jpg; sourceTree = "<group>"; };
 		4DEDACA41BC863F7007EEF0B /* 3.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 3.jpg; sourceTree = "<group>"; };
@@ -162,6 +165,8 @@
 				4D357CE11BCDDC1700C58DD0 /* MediaTableViewCell.m */,
 				4D71AF921BE02966005D6237 /* MediaFullScreenViewController.h */,
 				4D71AF931BE02966005D6237 /* MediaFullScreenViewController.m */,
+				4DDE3D431BEBEF8C0017E67B /* ComposeCommentView.h */,
+				4DDE3D441BEBEF8C0017E67B /* ComposeCommentView.m */,
 				4D32280D1BCC85F4001D3471 /* User.h */,
 				4D32280E1BCC85F4001D3471 /* User.m */,
 				4D3228101BCC86CB001D3471 /* Media.h */,
@@ -444,6 +449,7 @@
 				4D0B76301BD8313E00764934 /* LoginViewController.m in Sources */,
 				4D75AED41BEA70B5001DBF86 /* LikeButton.m in Sources */,
 				4D3228181BCC880D001D3471 /* DataSource.m in Sources */,
+				4DDE3D451BEBEF8C0017E67B /* ComposeCommentView.m in Sources */,
 				4D87C38E1BC856C900A2F1BD /* main.m in Sources */,
 				4DEDACB81BC8644E007EEF0B /* ImagesTableViewController.m in Sources */,
 			);
