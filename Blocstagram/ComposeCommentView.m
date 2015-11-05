@@ -97,8 +97,12 @@
     _isWritingComment = isWritingComment;
     
     if (animated) {
-        [UIView animateWithDuration:0.2 animations:^{
+        [UIView animateWithDuration:1.0 animations:^{
+            self.button.alpha = 0.1;
+            self.button.alpha = 1.0;
+        
             [self layoutSubviews];
+            
         }];
     } else {
         [self layoutSubviews];
