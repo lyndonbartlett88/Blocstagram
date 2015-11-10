@@ -5,8 +5,8 @@
 //  Created by Lyndon Bartlett on 11/9/15.
 //  Copyright © 2015 Lyndon Bartlett. All rights reserved.
 //
-
 #import "PostToInstagramViewController.h"
+#import "FilterCollectionViewCell.h"
 
 @interface PostToInstagramViewController () <UICollectionViewDataSource, UICollectionViewDelegate, UIDocumentInteractionControllerDelegate>
 
@@ -28,9 +28,56 @@
 
 @implementation PostToInstagramViewController
 
+- (instancetype) initWithImage:(UIImage *)sourceImage {
+    self = [super init];
+    
+    if (self) {
+        self.sourceImage = sourceImage;
+        self.previewImageView = [[UIImageView alloc] initWithImage:self.sourceImage];
+        
+        self.photoFilterOperationQueue = [[NSOperationQueue alloc]init];
+        
+        UICollectionViewFlowLayout *flowlayout = [[UICollectionViewFlowLayout alloc] init];
+        flowlayout.itemSize = CGSizeMake(44, 64);
+        flowlayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
+        flowlayout.minimumInteritemSpacing = 10;
+        flowlayout.minimumLineSpacing = 10;
+        
+        self.filterCollectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:flowlayout];
+        self.filterCollectionView.dataSource = self;
+        self.filterCollectionView.delegate = self;
+        self.filterCollectionView.showsHorizontalScrollIndicator = NO;
+        
+        self.filterImages = [NSMutableArray arrayWithObject:sourceImage];
+        self.filterTitles = [NSMutableArray arrayWithObject:NSLocalizedString(@"None", @"Label for when no filter is applied to a photo")];
+        
+        self.sendButton = [UIButton buttonWithType:UIButtonTypeSystem];
+        self.sendButton.backgroundColor = [UIColor colorWithRed:0.345 green:0.318 blue:0.424 alpha:1]; //#58516c
+        self.sendButton.layer.cornerRadius = 5;
+        [self.sendButton setAttributedTitle:[self sendAttributedString] forState:UIControlStateNormal];
+        [self.sendButton addTarget:self action:@selector(sendButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+        
+        self.sendBarButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Send", @"Send button") style:UIBarButtonItemStyleDone target:self action:@selector(sendButtonPressed:)];
+        
+        [self addFiltersToQueue];
+    }
+    return self;
+}
 
-- (void)viewDidLoad
-{
+- (NSAttributedString *) sendAttributedString {
+    NSString *baseString = NSLocalizedString(@"SEND TO INSTAGRAM", @"Send to Instagram button text");
+    NSRange range = [baseString rangeOfString:baseString];
+    
+    NSMutableAttributedString *commentString = [[NSMutableAttributedString alloc] initWithString:baseString];
+    
+    [commentString addAttribute:NSFontAttributeName value:[UIFont fontWithName:@"HelveticaNeue-Bold" size:13] range:range];
+    [commentString addAttribute:NSKernAttributeName value:@1.3 range:range];
+    [commentString addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithRed:0.933 green:0.933 blue:0.933 alpha:1] range:range];
+    
+    return commentString;
+}
+
+- (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
@@ -43,7 +90,11 @@
         self.navigationItem.rightBarButtonItem = self.sendBarButton;
     }
     
-    [self.filterCollectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"cell"];
+    
+    [self.filterCollectionView registerClass:[FilterCollectionViewCell class] forCellWithReuseIdentifier:@"cell"];
+    
+    // We'll use a vanilla UICollectionViewCell instead of a subclass. (Your assignment at the end will be to replace this with a UICollectionViewCell subclass.)
+    // Remove some of the layout code from this controller by replacing the vanilla UICollectionViewCell with a subclass. (Refer back to your UITableViewCell subclass for hints).
     
     self.view.backgroundColor = [UIColor whiteColor];
     self.filterCollectionView.backgroundColor = [UIColor whiteColor];
@@ -51,60 +102,7 @@
     self.navigationItem.title = NSLocalizedString(@"Apply Filter", @"apply filter view title");
 }
 
-- (instancetype) initWithImage:(UIImage *)sourceImage {
-    self = [super init];
-    
-    if (self) {
-        self.sourceImage = sourceImage;
-        self.previewImageView = [[UIImageView alloc] initWithImage:self.sourceImage];
-        
-        self.photoFilterOperationQueue = [[NSOperationQueue alloc] init];
-        
-        UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
-        flowLayout.itemSize = CGSizeMake(44, 64);
-        flowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
-        flowLayout.minimumInteritemSpacing = 10;
-        flowLayout.minimumLineSpacing = 10;
-        
-        self.filterCollectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:flowLayout];
-        self.filterCollectionView.dataSource = self;
-        self.filterCollectionView.delegate = self;
-        self.filterCollectionView.showsHorizontalScrollIndicator = NO;
-        
-        self.filterImages = [NSMutableArray arrayWithObject:sourceImage];
-        self.filterTitles = [NSMutableArray arrayWithObject:NSLocalizedString(@"None", @"Label for when no filter is applied to a photo")];
-        
-        self.sendButton = [UIButton buttonWithType:UIButtonTypeSystem];
-        self.sendButton.backgroundColor = [UIColor colorWithRed:0.345 green:0.318 blue:0.424 alpha:1]; /*#58516c*/
-        self.sendButton.layer.cornerRadius = 5;
-        [self.sendButton setAttributedTitle:[self sendAttributedString] forState:UIControlStateNormal];
-        [self.sendButton addTarget:self action:@selector(sendButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-        
-        self.sendBarButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Send", @"Send button") style:UIBarButtonItemStyleDone target:self action:@selector(sendButtonPressed:)];
-    
-        [self addFiltersToQueue];
-    }
-    
-    
-    return self;
-}
-
-#pragma mark - Buttons
-
-- (NSAttributedString *) sendAttributedString {
-    NSString *baseString = NSLocalizedString(@"SEND TO INSTAGRAM", @"send to Instagram button text");
-    NSRange range = [baseString rangeOfString:baseString];
-    
-    NSMutableAttributedString *commentString = [[NSMutableAttributedString alloc] initWithString:baseString];
-    
-    [commentString addAttribute:NSFontAttributeName value:[UIFont fontWithName:@"HelveticaNeue-Bold" size:13] range:range];
-    [commentString addAttribute:NSKernAttributeName value:@1.3 range:range];
-    [commentString addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithRed:0.933 green:0.933 blue:0.933 alpha:1] range:range];
-    
-    return commentString;
-}
-
-- (void)viewWillLayoutSubviews {
+- (void) viewWillLayoutSubviews {
     [super viewWillLayoutSubviews];
     
     CGFloat edgeSize = MIN(CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame));
@@ -127,74 +125,23 @@
     
     self.filterCollectionView.frame = CGRectMake(0, filterViewYOrigin, CGRectGetWidth(self.view.frame), filterViewHeight);
     
-    UICollectionViewFlowLayout *flowLayout = (UICollectionViewFlowLayout *)self.filterCollectionView.collectionViewLayout;
+    UICollectionViewFlowLayout *flowLayout = (UICollectionViewFlowLayout *) self.filterCollectionView.collectionViewLayout;
     flowLayout.itemSize = CGSizeMake(CGRectGetHeight(self.filterCollectionView.frame) - 20, CGRectGetHeight(self.filterCollectionView.frame));
 }
 
-- (void) sendButtonPressed:(id)sender {
-    NSURL *instagramURL = [NSURL URLWithString:@"instagram://location?id=1"];
-    
-    UIAlertController *alertVC;
-    
-    if ([[UIApplication sharedApplication] canOpenURL:instagramURL]) {
-        alertVC = [UIAlertController alertControllerWithTitle:@"" message:NSLocalizedString(@"Add a caption and send your image in the Instagram app.", @"send image instructions") preferredStyle:UIAlertControllerStyleAlert];
-        
-        [alertVC addTextFieldWithConfigurationHandler:^(UITextField *textField) {
-            textField.placeholder = NSLocalizedString(@"Caption", @"Caption");
-        }];
-        
-        [alertVC addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"cancel button") style:UIAlertActionStyleCancel handler:nil]];
-        [alertVC addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Send", @"Send button") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-            UITextField *textField = alertVC.textFields[0];
-            [self sendImageToInstagramWithCaption:textField.text];
-        }]];
-    } else {
-        alertVC = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"No Instagram App", nil) message:NSLocalizedString(@"Add a caption and send your image in the Instagram app.", @"send image instructions") preferredStyle:UIAlertControllerStyleAlert];
-        
-        [alertVC addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"OK button") style:UIAlertActionStyleCancel handler:nil]];
-    }
-    
-    [self presentViewController:alertVC animated:YES completion:nil];
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
 }
 
-- (void) sendImageToInstagramWithCaption:(NSString *)caption {
-    NSData *imagedata = UIImageJPEGRepresentation(self.previewImageView.image, 0.9f);
-    
-    NSURL *tmpDirURL = [NSURL fileURLWithPath:NSTemporaryDirectory() isDirectory:YES];
-    NSURL *fileURL = [[tmpDirURL URLByAppendingPathComponent:@"blocstagram"] URLByAppendingPathExtension:@"igo"];
-    
-    BOOL success = [imagedata writeToURL:fileURL atomically:YES];
-    
-    if (!success) {
-        UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Couldn't save image", nil) message:NSLocalizedString(@"Your cropped and filtered photo couldn't be saved. Make sure you have enough disk space and try again.", nil) preferredStyle:UIAlertControllerStyleAlert];
-        [alertVC addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"OK button") style:UIAlertActionStyleCancel handler:nil]];
-        [self presentViewController:alertVC animated:YES completion:nil];
-        return;
-    }
-    
-    self.documentController = [UIDocumentInteractionController interactionControllerWithURL:fileURL];
-    self.documentController.UTI = @"com.instagram.exclusivegram";
-    self.documentController.delegate = self;
-    
-    if (caption.length > 0) {
-        self.documentController.annotation = @{@"InstagramCaption": caption};
-    }
-    
-    if (self.sendButton.superview) {
-        [self.documentController presentOpenInMenuFromRect:self.sendButton.bounds inView:self.sendButton animated:YES];
-    } else {
-        [self.documentController presentOpenInMenuFromBarButtonItem:self.sendBarButton animated:YES];
-    }
-}
-
-#pragma mark - UICollectionView delegate and data source
+#pragma mark - UICOllectionView delegate and data source
 
 - (NSInteger) collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
     return self.filterImages.count;
 }
 
-- (UICollectionViewCell*) collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"cell" forIndexPath:indexPath];
+- (FilterCollectionViewCell *) collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+    FilterCollectionViewCell *cell = (FilterCollectionViewCell*)[collectionView dequeueReusableCellWithReuseIdentifier:@"cell" forIndexPath:indexPath];
     
     static NSInteger imageViewTag = 1000;
     static NSInteger labelTag = 1001;
@@ -232,13 +179,73 @@
     self.previewImageView.image = self.filterImages[indexPath.row];
 }
 
+- (void) sendButtonPressed:(id)sender {
+    NSURL *instagramURL = [NSURL URLWithString:@"instagram://location?id=1"];
+    
+    UIAlertController *alertVC;
+    
+    if ([[UIApplication sharedApplication] canOpenURL:instagramURL]) {
+        alertVC = [UIAlertController alertControllerWithTitle:@"" message:NSLocalizedString(@"Add a caption and send your image in the Instagram app.", @"send image instructions") preferredStyle:UIAlertControllerStyleAlert];
+        
+        [alertVC addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+            textField.placeholder = NSLocalizedString(@"Caption", @"Caption");
+        }];
+        
+        [alertVC addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"cancel button") style:UIAlertActionStyleCancel handler:nil]];
+        [alertVC addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Send", @"send button") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            UITextField *textField = alertVC.textFields[0];
+            [self sendImageToInstagramWithCaption:textField.text];
+        }]];
+    } else {
+        alertVC = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"No Instagram App", nil) message:NSLocalizedString(@"Add a caption and send your image in the Instagram app.", @"send image instructions") preferredStyle:UIAlertControllerStyleAlert];
+        
+        [alertVC addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"OK button") style:UIAlertActionStyleCancel handler:nil]];
+    }
+    [self presentViewController:alertVC animated:YES completion:nil];
+}
+
+- (void) sendImageToInstagramWithCaption:(NSString *)caption {
+    NSData *imagedata = UIImageJPEGRepresentation(self.previewImageView.image, 0.9f);
+    
+    NSURL *tmpDirURL = [NSURL fileURLWithPath:NSTemporaryDirectory() isDirectory:YES];
+    NSURL *fileURL = [[tmpDirURL URLByAppendingPathComponent:@"blocstagram"] URLByAppendingPathExtension:@"igo"];
+    
+    BOOL success = [imagedata writeToURL:fileURL atomically:YES];
+    if (!success) {
+        UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Couldn't save image", nil) message:NSLocalizedString(@"Your cropped and filtered photo couldn't be saved. Make sure you have enough disk space and try again.", nil) preferredStyle:UIAlertControllerStyleAlert];
+        [alertVC addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"OK button") style:UIAlertActionStyleCancel handler:nil]];
+        [self presentViewController:alertVC animated:YES completion:nil];
+        return;
+    }
+    
+    self.documentController = [UIDocumentInteractionController interactionControllerWithURL:fileURL];
+    self.documentController.UTI = @"com.instagram.exclusivegram";
+    self.documentController.delegate = self;
+    
+    if (caption.length >0) {
+        self.documentController.annotation = @{@"InstagramCaption": caption};
+    }
+    
+    if (self.sendButton.superview) {
+        [self.documentController presentOpenInMenuFromRect:self.sendButton.bounds inView:self.sendButton animated:YES];
+    } else {
+        [self.documentController presentOpenInMenuFromBarButtonItem:self.sendBarButton animated:YES];
+    }
+}
+
+#pragma mark - UIDocumentInterationControllerDelegate
+
+- (void)documentInteractionController:(UIDocumentInteractionController *)controller didEndSendingToApplication:(NSString *)application {
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
 #pragma mark - Photo Filters
 
 - (void) addCIImageToCollectionView:(CIImage *)CIImage withFilterTitle:(NSString *)filterTitle {
     UIImage *image = [UIImage imageWithCIImage:CIImage scale:self.sourceImage.scale orientation:self.sourceImage.imageOrientation];
     
     if (image) {
-        // Decompress image
+        //Decompress image
         UIGraphicsBeginImageContextWithOptions(image.size, NO, image.scale);
         [image drawAtPoint:CGPointZero];
         image = UIGraphicsGetImageFromCurrentImageContext();
@@ -258,14 +265,14 @@
 - (void) addFiltersToQueue {
     CIImage *sourceCIImage = [CIImage imageWithCGImage:self.sourceImage.CGImage];
     
-    // Noir filter
+    //Noir filter
     
     [self.photoFilterOperationQueue addOperationWithBlock:^{
         CIFilter *noirFilter = [CIFilter filterWithName:@"CIPhotoEffectNoir"];
         
         if (noirFilter) {
             [noirFilter setValue:sourceCIImage forKey:kCIInputImageKey];
-            [self addCIImageToCollectionView:noirFilter.outputImage withFilterTitle:NSLocalizedString(@"Noir", @"Noir Filter")];
+            [self addCIImageToCollectionView:noirFilter.outputImage withFilterTitle:NSLocalizedString(@"Noir", @"NoirFilter")];
         }
     }];
     
@@ -313,7 +320,7 @@
         }
     }];
     
-    // Drunk filter
+    // Drunk Filter
     
     [self.photoFilterOperationQueue addOperationWithBlock:^{
         CIFilter *drunkFilter = [CIFilter filterWithName:@"CIConvolution5X5"];
@@ -342,10 +349,10 @@
     [self.photoFilterOperationQueue addOperationWithBlock:^{
         // #1
         CIFilter *sepiaFilter = [CIFilter filterWithName:@"CISepiaTone"];
-        [sepiaFilter setValue:@1 forKey:kCIInputIntensityKey];
+        [sepiaFilter setValue:@1 forKey:kCIInputImageKey];
         [sepiaFilter setValue:sourceCIImage forKey:kCIInputImageKey];
         
-        // #2
+        //#2
         CIFilter *randomFilter = [CIFilter filterWithName:@"CIRandomGenerator"];
         
         CIImage *randomImage = [CIFilter filterWithName:@"CIRandomGenerator"].outputImage;
@@ -388,7 +395,7 @@
                                                   kCIInputBackgroundImageKey, sepiaImage,
                                                   nil].outputImage;
             
-            // #10
+            //#10
             CIImage *darkScratchesImage = [darkScratches.outputImage imageByCroppingToRect:sourceCIImage.extent];
             
             [minimumComponent setValue:darkScratchesImage forKey:kCIInputImageKey];
@@ -401,12 +408,54 @@
         }
     }];
     
+    
+    // Motion blur filter
+    
+    [self.photoFilterOperationQueue addOperationWithBlock:^{
+        CIFilter *motionBlurFilter = [CIFilter filterWithName:@"CIMotionBlur" keysAndValues:
+                                      @"inputAngle", [NSNumber numberWithInt:25],
+                                      @"inputRadius", [NSNumber numberWithInt:12],
+                                      nil];
+        
+        if (motionBlurFilter) {
+            [motionBlurFilter setValue:sourceCIImage forKey:kCIInputImageKey];
+            [self addCIImageToCollectionView:motionBlurFilter.outputImage withFilterTitle:NSLocalizedString(@"Motion Blur", @"Motion Blur Filter")];
+        }
+    }];
+    
+    
+    // Compound filter
+    
+    [self.photoFilterOperationQueue addOperationWithBlock:^{
+        
+        CIFilter *invertFilter = [CIFilter filterWithName:@"CIColorInvert"];
+        CIFilter *vignetteFilter = [CIFilter filterWithName:@"CIVignette"];
+        
+        if (invertFilter)
+        {
+            [invertFilter setValue:sourceCIImage forKey:kCIInputImageKey];
+            
+            CIImage *result = invertFilter.outputImage;
+            
+            if (vignetteFilter)
+            {
+                [vignetteFilter setValue:result forKeyPath:kCIInputImageKey];
+                [vignetteFilter setValue:@2.0 forKeyPath:kCIInputIntensityKey];
+                [vignetteFilter setValue:@10.0 forKeyPath:kCIInputRadiusKey];
+                result = vignetteFilter.outputImage;
+            }
+            
+            [self addCIImageToCollectionView:result withFilterTitle:NSLocalizedString(@"Compound", @"Compound Filter")];
+        }
+    }];
 }
-
-#pragma mark - UIDocumentInteractionControllerDelegate
-
-- (void)documentInteractionController:(UIDocumentInteractionController *)controller didEndSendingToApplication:(NSString *)application {
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
+/*
+ #pragma mark - Navigation
+ // In a storyboard-based application, you will often want to do a little preparation before navigation
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+ // Get the new view controller using [segue destinationViewController].
+ // Pass the selected object to the new view controller.
+ }
+ */
 
 @end
