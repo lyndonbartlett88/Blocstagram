@@ -41,6 +41,7 @@
 		4DF0478D1BF17BD9008F3C68 /* CropImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4DF0478C1BF17BD9008F3C68 /* CropImageViewController.m */; };
 		4DF047901BF17EB9008F3C68 /* ImageLibraryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4DF0478F1BF17EB9008F3C68 /* ImageLibraryViewController.m */; };
 		4DF047931BF1922C008F3C68 /* PostToInstagramViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4DF047921BF1922C008F3C68 /* PostToInstagramViewController.m */; };
+		4DF2FE771BF3E89B003F082B /* UserTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4DF2FE761BF3E89B003F082B /* UserTests.m */; };
 		4DFB38F11BF296910017FE82 /* FilterCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4DFB38F01BF296910017FE82 /* FilterCollectionViewCell.m */; };
 		A0A4A4D5E5A261B233EEAEB4 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F8DB896B4AAC42700705F7B0 /* libPods.a */; };
 /* End PBXBuildFile section */
@@ -122,6 +123,7 @@
 		4DF0478F1BF17EB9008F3C68 /* ImageLibraryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageLibraryViewController.m; sourceTree = "<group>"; };
 		4DF047911BF1922C008F3C68 /* PostToInstagramViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostToInstagramViewController.h; sourceTree = "<group>"; };
 		4DF047921BF1922C008F3C68 /* PostToInstagramViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostToInstagramViewController.m; sourceTree = "<group>"; };
+		4DF2FE761BF3E89B003F082B /* UserTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserTests.m; sourceTree = "<group>"; };
 		4DFB38EF1BF296910017FE82 /* FilterCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilterCollectionViewCell.h; sourceTree = "<group>"; };
 		4DFB38F01BF296910017FE82 /* FilterCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FilterCollectionViewCell.m; sourceTree = "<group>"; };
 		9FEFBA8E756CD6BB870B75AD /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
@@ -242,6 +244,7 @@
 			children = (
 				4D87C3A61BC856C900A2F1BD /* BlocstagramTests.m */,
 				4D87C3A81BC856C900A2F1BD /* Info.plist */,
+				4DF2FE761BF3E89B003F082B /* UserTests.m */,
 			);
 			path = BlocstagramTests;
 			sourceTree = "<group>";
@@ -507,6 +510,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4DF2FE771BF3E89B003F082B /* UserTests.m in Sources */,
 				4D87C3A71BC856C900A2F1BD /* BlocstagramTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
