@@ -98,10 +98,12 @@
     if (indexPath) {
         [self.tableView deselectRowAtIndexPath:indexPath animated:animated];
     }
+    [super viewWillAppear:YES];
 }
 
 - (void) viewWillDisappear:(BOOL)animated {
     
+    [super viewWillDisappear:YES];
 }
 
 - (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
